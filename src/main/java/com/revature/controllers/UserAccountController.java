@@ -2,6 +2,9 @@ package com.revature.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +41,17 @@ public class UserAccountController {
 		return this.userAccountService.selectAllUserAccounts();
 	}
 	
-	
+	@PostMapping (value="/login") 
+	public Boolean login (HttpServletResponse response, @RequestBody UserAccount userAccount) {
+		Cookie cookie = this.userAccountService.verifyLogin(userAccount, null);
+		
+		if (null == cookie) {
+			return false;
+		}
+		
+		response.addCookie(cookie);
+		return true;
+	}
 	
 	public UserAccountService getUserAccountService() {
 		return userAccountService;
