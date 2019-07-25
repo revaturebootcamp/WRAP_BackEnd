@@ -1,21 +1,23 @@
 package com.revature.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.models.UserAccount;
-import com.revature.repositories.UserAccountRepository;
+import com.revature.services.UserAccountService;
 
 @RestController
 @RequestMapping ("/useraccount")
 public class UserAccountController {
 
-	@Autowired
-	private UserAccountRepository userAccountRepository;
+	private UserAccountService userAccountService;
 	
 	public UserAccountController() {
 	}
@@ -27,7 +29,25 @@ public class UserAccountController {
 	}
 	
 	@PostMapping (value="/insert")
-	public Boolean insertAccount (@RequestBody UserAccount u) {
-		return true;
+	public String insertAccount (@RequestBody UserAccount userAccount) {
+		return this.userAccountService.insertUserAccount(userAccount);
 	}
+
+	@GetMapping (value="/getAll")
+	public List<UserAccount> getAll () {
+		return this.userAccountService.selectAllUserAccounts();
+	}
+	
+	
+	
+	public UserAccountService getUserAccountService() {
+		return userAccountService;
+	}
+
+	@Autowired
+	public void setUserAccountService(UserAccountService userAccountService) {
+		this.userAccountService = userAccountService;
+	}
+	
+	
 }
