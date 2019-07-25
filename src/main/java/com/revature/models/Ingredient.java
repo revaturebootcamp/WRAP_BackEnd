@@ -4,14 +4,30 @@ public class Ingredient {
 
 	private Integer id;
 	private Float quantity;
+	private String name;
 	
 	public Ingredient() {
+	}
+
+	public Ingredient(Integer id, Float quantity, String name) {
+		super();
+		this.id = id;
+		this.quantity = quantity;
+		this.name = name;
 	}
 
 	public Ingredient(Integer id, Float quantity) {
 		super();
 		this.id = id;
 		this.quantity = quantity;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getId() {
@@ -35,6 +51,7 @@ public class Ingredient {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
 		return result;
 	}
@@ -53,6 +70,11 @@ public class Ingredient {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
 		if (quantity == null) {
 			if (other.quantity != null)
 				return false;
@@ -63,7 +85,7 @@ public class Ingredient {
 
 	@Override
 	public String toString() {
-		return "Ingredient [id=" + id + ", quantity=" + quantity + "]";
+		return "Ingredient [id=" + id + ", quantity=" + quantity + ", name=" + name + "]";
 	}
 	
 	
