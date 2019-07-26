@@ -28,24 +28,38 @@ public class UserAccountController {
 	public UserAccountController() {
 	}
 
+	/*
+	 * These are for testing purposes
+	 */
 	@GetMapping (value="/hello")
 	public String sayHello () {
 		System.out.println("hello!!");
 		return "hello";
 	}
 	
+	@GetMapping (value="/getAll")
+	public List<UserAccount> getAll () {
+		return this.userAccountService.selectAllUserAccounts();
+	}
+
+	@GetMapping (value="/verifyAccount")
+	public Boolean getAccount (@CookieValue (UserAccountService.COOKIE) String cookie) {
+		return this.userAccountService.verifyLogin(cookie);
+	}
+	
+	
+	
+	/*
+	 * These are for use
+	 */
+	
 	@PostMapping (value="/insert")
 	public Boolean insertAccount (@RequestBody UserAccount userAccount) {
 		return this.userAccountService.insertUserAccount(userAccount);
 	}
 
-	@GetMapping (value="/getAll")
-	public List<UserAccount> getAll () {
-		return this.userAccountService.selectAllUserAccounts();
-	}
-	
 	@PostMapping (value="/login") 
-	public Boolean login (HttpServletRequest request, HttpServletResponse response, @RequestBody UserAccount userAccount) {
+	public Boolean login (HttpServletResponse response, @RequestBody UserAccount userAccount) {
 		Cookie cookie = this.userAccountService.login(userAccount);
 		
 		if (null == cookie) {
@@ -57,11 +71,6 @@ public class UserAccountController {
 	}
 	
 	
-	@GetMapping (value="/getAccount")
-	public Boolean getAccount (@CookieValue (UserAccountService.COOKIE) String cookie, HttpServletRequest request) {
-		
-		return this.userAccountService.verifyLogin(cookie);
-	}
 	
 	public UserAccountService getUserAccountService() {
 		return userAccountService;
