@@ -4,7 +4,6 @@ import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.models.RecipeData;
 import com.revature.models.UserAccount;
+import com.revature.services.RecipeDataService;
 import com.revature.services.UserAccountService;
 
 @RestController
@@ -24,6 +24,7 @@ import com.revature.services.UserAccountService;
 public class UserAccountController {
 
 	private UserAccountService userAccountService;
+	private RecipeDataService recipeDataService;
 	
 	public UserAccountController() {
 	}
@@ -43,7 +44,7 @@ public class UserAccountController {
 	}
 
 	@GetMapping (value="/verifyAccount")
-	public Boolean getAccount (@CookieValue (UserAccountService.COOKIE) String cookie) {
+	public Boolean verifyAccount (@CookieValue (UserAccountService.COOKIE) String cookie) {
 		return this.userAccountService.verifyLogin(cookie);
 	}
 	
@@ -71,7 +72,38 @@ public class UserAccountController {
 	}
 	
 	
+	@GetMapping (value="/recipedata/getAll")
+	public RecipeData getAllRecipeData (@CookieValue (UserAccountService.COOKIE) String cookie) {
+		UserAccount user = this.userAccountService.getAccount(cookie);
+		
+		if (null == user) {
+			return null;
+		}
+		
+		return this.recipeDataService.getRecipeDataForUser (user.getId());
+	}
 	
+	@PostMapping (value="/recipedata/insert")
+	public Boolean insertRecipeData (@CookieValue (UserAccountService.COOKIE) String cookie, 
+									 @RequestBody RecipeData recipeData) {
+		if (!this.userAccountService.verifyLogin(cookie)) {
+			return false;
+		}
+		return this.recipeDataService.setRecipeDataForUser(recipeData);
+	}
+	
+	
+	
+	
+	public RecipeDataService getRecipeDataService() {
+		return recipeDataService;
+	}
+
+	@Autowired
+	public void setRecipeDataService(RecipeDataService recipeDataService) {
+		this.recipeDataService = recipeDataService;
+	}
+
 	public UserAccountService getUserAccountService() {
 		return userAccountService;
 	}

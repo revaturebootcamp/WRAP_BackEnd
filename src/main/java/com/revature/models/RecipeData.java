@@ -2,8 +2,13 @@ package com.revature.models;
 
 import java.util.Arrays;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class RecipeData {
 
+	@Id
 	private Integer ownerId;
 	private Recipe[] favorites,
 					 current,

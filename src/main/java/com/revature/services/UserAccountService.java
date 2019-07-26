@@ -38,6 +38,10 @@ public class UserAccountService {
 		return this.cookieCache.containsKey(cookie);
 	}
 	
+	public UserAccount getAccount (String cookie) {
+		return this.cookieCache.get(cookie);
+	}
+	
 	public Cookie login (UserAccount u) {
 		UserAccount user = this.userAccountRepository.findByUsernameIgnoreCaseAndPassword (u.getUsername(), u.getPassword());
 
@@ -47,6 +51,7 @@ public class UserAccountService {
 		
 		
 		//ensure if there is an old cookie value, it is removed
+		user.setPassword(null); //set null since not storing password locally
 		String badCookie = this.userCache.get(user);
 		if (null != badCookie) {
 			cookieCache.remove(badCookie);
@@ -90,6 +95,9 @@ public class UserAccountService {
 		return this.userAccountRepository.findAll();
 	}
 
+
+	
+	
 	public UserAccountRepository getUserAccountRepository() {
 		return userAccountRepository;
 	}
@@ -104,7 +112,10 @@ public class UserAccountService {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((cookieCache == null) ? 0 : cookieCache.hashCode());
+		result = prime * result + ((random == null) ? 0 : random.hashCode());
 		result = prime * result + ((userAccountRepository == null) ? 0 : userAccountRepository.hashCode());
+		result = prime * result + ((userCache == null) ? 0 : userCache.hashCode());
 		return result;
 	}
 
@@ -118,10 +129,25 @@ public class UserAccountService {
 		if (getClass() != obj.getClass())
 			return false;
 		UserAccountService other = (UserAccountService) obj;
+		if (cookieCache == null) {
+			if (other.cookieCache != null)
+				return false;
+		} else if (!cookieCache.equals(other.cookieCache))
+			return false;
+		if (random == null) {
+			if (other.random != null)
+				return false;
+		} else if (!random.equals(other.random))
+			return false;
 		if (userAccountRepository == null) {
 			if (other.userAccountRepository != null)
 				return false;
 		} else if (!userAccountRepository.equals(other.userAccountRepository))
+			return false;
+		if (userCache == null) {
+			if (other.userCache != null)
+				return false;
+		} else if (!userCache.equals(other.userCache))
 			return false;
 		return true;
 	}
@@ -129,7 +155,8 @@ public class UserAccountService {
 
 	@Override
 	public String toString() {
-		return "UserAccountService [userAccountRepository=" + userAccountRepository + "]";
+		return "UserAccountService [userAccountRepository=" + userAccountRepository + ", random=" + random
+				+ ", cookieCache=" + cookieCache + ", userCache=" + userCache + "]";
 	}
 
 
