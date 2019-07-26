@@ -86,9 +86,13 @@ public class UserAccountController {
 	@PostMapping (value="/recipedata/insert")
 	public Boolean insertRecipeData (@CookieValue (UserAccountService.COOKIE) String cookie, 
 									 @RequestBody RecipeData recipeData) {
-		if (!this.userAccountService.verifyLogin(cookie)) {
+		UserAccount user = this.userAccountService.getAccount(cookie);
+		
+		if (null == user) {
 			return false;
 		}
+		
+		recipeData.setOwnerId(user.getId());
 		return this.recipeDataService.setRecipeDataForUser(recipeData);
 	}
 	

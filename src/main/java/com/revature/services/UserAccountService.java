@@ -34,6 +34,14 @@ public class UserAccountService {
 		this.userAccountRepository = userAccountRepository;
 	}
 
+	public Integer getAccountId (String cookie) {
+		UserAccount user = this.cookieCache.get(cookie);
+		if (null == user) {
+			return null;
+		}
+		return user.getId();
+	}
+	
 	public Boolean verifyLogin (String cookie) {
 		return this.cookieCache.containsKey(cookie);
 	}
