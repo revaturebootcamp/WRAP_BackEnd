@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,11 @@ public class UserAccountService {
 
 	private UserAccountRepository userAccountRepository;
 	private Random random = new Random ();
-	private Map<Cookie,UserAccount> userCache = new HashMap<Cookie,UserAccount> (); 
+	private Map<String,UserAccount> cookieCache = new HashMap<String,UserAccount> ();
+	private Map<UserAccount,String> userCache = new HashMap<UserAccount,String> ();
 	
-	private static final String URL = "WRAP_UserAccountCookie";
+	public static final String COOKIE = "WRAP_UserAccountCookie";
+	private static final int LOGOUT_TIME = 120 * 60;
 	
 	public UserAccountService() {
 	}
@@ -31,23 +34,56 @@ public class UserAccountService {
 		this.userAccountRepository = userAccountRepository;
 	}
 
-	public Cookie verifyLogin (UserAccount u, Cookie c) {
-		if (this.userCache.containsKey(c) && this.userCache.get(c).equals(u)) {
-			return c;
-		}
-		return this.login (u);
+	public Boolean verifyLogin (String cookie) {
+		return this.cookieCache.containsKey(cookie);
 	}
 	
 	public Cookie login (UserAccount u) {
-		if ((this.userAccountRepository.findByUsernameIgnoreCaseAndPassword (u.getUsername(), u.getPassword())).isEmpty()) {
-			return new Cookie (URL, String.valueOf(u.getUsername().hashCode() + random.nextInt()));
+		UserAccount user = this.userAccountRepository.findByUsernameIgnoreCaseAndPassword (u.getUsername(), u.getPassword());
+
+		if (null == user) {
+			return null;
 		}
-		return null;
+		
+		
+		//ensure if there is an old cookie value, it is removed
+		String badCookie = this.userCache.get(user);
+		if (null != badCookie) {
+			cookieCache.remove(badCookie);
+			userCache.remove(user);
+		}
+		
+		//set the new cookie for the login
+		Cookie cookie = null;
+		do {
+			cookie = new Cookie (UserAccountService.COOKIE, 
+					String.valueOf(u.hashCode() * random.nextInt()) 
+					+ (new Date ().getTime()));
+		} while (this.cookieCache.containsKey(cookie.getValue()));
+		
+		//set security info
+		cookie.setMaxAge(UserAccountService.LOGOUT_TIME);
+		cookie.setHttpOnly(true);
+//		cookie.setSecure(true);
+		
+		//remove user password
+		u.setPassword(null);
+		
+		this.cookieCache.put(cookie.getValue(), u);
+		this.userCache.put(user, cookie.getValue());
+		
+		return cookie;
+
 	}
 	
-	public String insertUserAccount (UserAccount u) {
+	public Boolean insertUserAccount (UserAccount u) {
+		try {
 		this.userAccountRepository.save(u);
-		return "Added user: " + u.getUsername();
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 	
 	public List<UserAccount> selectAllUserAccounts () {

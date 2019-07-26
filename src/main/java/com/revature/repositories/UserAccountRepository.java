@@ -8,7 +8,7 @@ import com.revature.models.UserAccount;
 
 public interface UserAccountRepository extends JpaRepository<UserAccount,Integer> {
 
-	List<UserAccount> findByUsernameIgnoreCaseAndPassword(String username, String password);
+	UserAccount findByUsernameIgnoreCaseAndPassword(String username, String password);
 
 	
 }

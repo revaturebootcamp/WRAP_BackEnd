@@ -1,11 +1,14 @@
 package com.revature.controllers;
 
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +35,7 @@ public class UserAccountController {
 	}
 	
 	@PostMapping (value="/insert")
-	public String insertAccount (@RequestBody UserAccount userAccount) {
+	public Boolean insertAccount (@RequestBody UserAccount userAccount) {
 		return this.userAccountService.insertUserAccount(userAccount);
 	}
 
@@ -42,8 +45,8 @@ public class UserAccountController {
 	}
 	
 	@PostMapping (value="/login") 
-	public Boolean login (HttpServletResponse response, @RequestBody UserAccount userAccount) {
-		Cookie cookie = this.userAccountService.verifyLogin(userAccount, null);
+	public Boolean login (HttpServletRequest request, HttpServletResponse response, @RequestBody UserAccount userAccount) {
+		Cookie cookie = this.userAccountService.login(userAccount);
 		
 		if (null == cookie) {
 			return false;
@@ -51,6 +54,13 @@ public class UserAccountController {
 		
 		response.addCookie(cookie);
 		return true;
+	}
+	
+	
+	@GetMapping (value="/getAccount")
+	public Boolean getAccount (@CookieValue (UserAccountService.COOKIE) String cookie, HttpServletRequest request) {
+		
+		return this.userAccountService.verifyLogin(cookie);
 	}
 	
 	public UserAccountService getUserAccountService() {

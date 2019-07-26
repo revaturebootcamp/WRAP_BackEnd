@@ -1,6 +1,7 @@
 package com.revature.models;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,8 +12,11 @@ public class UserAccount {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	private String username,
-				   password;
+	
+	@Column (unique=true)
+	private String username;
+	
+	private String password;
 	
 	
 	public UserAccount() {
@@ -88,7 +92,7 @@ public class UserAccount {
 
 	@Override
 	public String toString() {
-		return "UserAccount [id=" + id + ", username=" + username + ", password=" + password + ", favorites=" + "]";
+		return "UserAccount [id=" + id + ", username=" + username + ", password=" + password + "]";
 	}
 
 }
