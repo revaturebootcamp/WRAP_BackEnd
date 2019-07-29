@@ -1,6 +1,5 @@
 package com.revature.controllers;
 
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.models.RecipeData;
+import com.revature.models.Recipe;
 import com.revature.models.UserAccount;
-import com.revature.services.RecipeDataService;
+import com.revature.services.RecipeService;
 import com.revature.services.UserAccountService;
 
 @RestController
@@ -24,7 +23,8 @@ import com.revature.services.UserAccountService;
 public class UserAccountController {
 
 	private UserAccountService userAccountService;
-	private RecipeDataService recipeDataService;
+	private RecipeService recipeService;
+	
 	
 	public UserAccountController() {
 	}
@@ -72,41 +72,49 @@ public class UserAccountController {
 	}
 	
 	
-	@GetMapping (value="/recipedata/getAll")
-	public RecipeData getAllRecipeData (@CookieValue (UserAccountService.COOKIE) String cookie) {
+	
+	
+	@PostMapping (value="/recipe/insert")
+	public Recipe insertRecipe (@CookieValue (UserAccountService.COOKIE) String cookie, 
+								@RequestBody Recipe recipe) {
 		UserAccount user = this.userAccountService.getAccount(cookie);
+		if (null == user) {
+			return null;
+		}
+		recipe.setOwnerId(user.getId());
 		
+		return this.recipeService.insertRecipe (recipe);
+	}
+	
+	@GetMapping (value="/recipe/find/all")
+	public List<Recipe> getAllRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
+		UserAccount user = this.userAccountService.getAccount(cookie);
 		if (null == user) {
 			return null;
 		}
 		
-		return this.recipeDataService.getRecipeDataForUser (user.getId());
+		
+		return this.recipeService.getAllRecipes (user.getId());
 	}
 	
-	@PostMapping (value="/recipedata/insert")
-	public Boolean insertRecipeData (@CookieValue (UserAccountService.COOKIE) String cookie, 
-									 @RequestBody RecipeData recipeData) {
-		UserAccount user = this.userAccountService.getAccount(cookie);
-		
-		if (null == user) {
-			return false;
-		}
-		
-		recipeData.setOwnerId(user.getId());
-		return this.recipeDataService.setRecipeDataForUser(recipeData);
-	}
+
 	
 	
 	
 	
-	public RecipeDataService getRecipeDataService() {
-		return recipeDataService;
+	
+	
+	
+	
+	public RecipeService getRecipeService() {
+		return recipeService;
 	}
 
 	@Autowired
-	public void setRecipeDataService(RecipeDataService recipeDataService) {
-		this.recipeDataService = recipeDataService;
+	public void setRecipeService(RecipeService recipeService) {
+		this.recipeService = recipeService;
 	}
+
 
 	public UserAccountService getUserAccountService() {
 		return userAccountService;

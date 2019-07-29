@@ -9,12 +9,12 @@ import java.util.Random;
 import javax.servlet.http.Cookie;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.revature.models.UserAccount;
 import com.revature.repositories.UserAccountRepository;
 
-@Component ("userAccountService")
+@Service ("userAccountService")
 public class UserAccountService {
 
 	private UserAccountRepository userAccountRepository;
@@ -91,7 +91,7 @@ public class UserAccountService {
 	
 	public Boolean insertUserAccount (UserAccount u) {
 		try {
-		this.userAccountRepository.save(u);
+			this.userAccountRepository.save(u);
 		}
 		catch (Exception e) {
 			return false;
@@ -102,8 +102,7 @@ public class UserAccountService {
 	public List<UserAccount> selectAllUserAccounts () {
 		return this.userAccountRepository.findAll();
 	}
-
-
+	
 	
 	
 	public UserAccountRepository getUserAccountRepository() {
