@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="3" passed="3">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="103" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="103" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+      <class name="com.revature.testing.MyFirstTestNG">
+        <test-method status="PASS" signature="beforeSuite()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="beforeSuite" is-config="true" duration-ms="12" started-at="2019-07-30T15:23:23Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeSuite -->
+        <test-method status="PASS" signature="beforeClass()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="beforeClass" is-config="true" duration-ms="4" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeClass -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="beforeMethod" is-config="true" duration-ms="1" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="Test1()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="Test1" duration-ms="16" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Test1 -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="afterMethod" is-config="true" duration-ms="4" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="Test2()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="Test2" duration-ms="5" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Test2 -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="afterMethod" is-config="true" duration-ms="0" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="beforeMethod" is-config="true" duration-ms="7" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="Test3()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="Test3" duration-ms="9" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Test3 -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="afterMethod" is-config="true" duration-ms="9" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="afterSuite()[pri:0, instance:com.revature.testing.MyFirstTestNG@25bbe1b6]" name="afterSuite" is-config="true" duration-ms="0" started-at="2019-07-30T15:23:24Z" finished-at="2019-07-30T15:23:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterSuite -->
+      </class> <!-- com.revature.testing.MyFirstTestNG -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
