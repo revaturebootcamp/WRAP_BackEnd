@@ -53,6 +53,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				
+				<!-- Should cause it to be repackaged as a war -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+				
 			</plugin>
 		</plugins>
 		<finalName>${project.artifactId}</finalName>

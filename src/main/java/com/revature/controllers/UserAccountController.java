@@ -86,6 +86,21 @@ public class UserAccountController {
 		return this.recipeService.insertRecipe (recipe);
 	}
 	
+	@PostMapping (value="recipe/insertmany")
+	public List<Recipe> insertRecipes (@CookieValue (UserAccountService.COOKIE) String cookie,
+										@RequestBody Recipe[] recipes) {
+		UserAccount user = this.userAccountService.getAccount(cookie);
+		if (null == user) {
+			return null;
+		}
+		
+		for (Recipe r : recipes) {
+			r.setOwnerId(user.getId());
+		}
+		
+		return this.recipeService.insertRecipes(recipes);		
+	}
+	
 	@GetMapping (value="/recipe/find/all")
 	public List<Recipe> getAllRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
 		UserAccount user = this.userAccountService.getAccount(cookie);
@@ -93,11 +108,39 @@ public class UserAccountController {
 			return null;
 		}
 		
-		
 		return this.recipeService.getAllRecipes (user.getId());
 	}
-	
 
+	@GetMapping (value="/recipe/find/current")
+	public List<Recipe> getCurrentRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
+		UserAccount user = this.userAccountService.getAccount(cookie);
+		if (null == user) {
+			return null;
+		}
+		
+		return this.recipeService.getCurrentRecipes (user.getId());
+	}
+
+	@GetMapping (value="/recipe/find/favorite")
+	public List<Recipe> getFavoriteRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
+		UserAccount user = this.userAccountService.getAccount(cookie);
+		if (null == user) {
+			return null;
+		}
+		
+		return this.recipeService.getFavoriteRecipes (user.getId());
+	}
+
+	@GetMapping (value="/recipe/find/history")
+	public List<Recipe> getHistoryRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
+		UserAccount user = this.userAccountService.getAccount(cookie);
+		if (null == user) {
+			return null;
+		}
+		
+		return this.recipeService.getHistoryRecipes (user.getId());
+	}
+	
 	
 	
 	
