@@ -14,11 +14,6 @@
 	<name>WRAP</name>
 	<description>App to help users organize shopping lists</description>
 	<packaging>war</packaging>
-	<!--
-	<build>
-	    <finalName>${artifactId}</finalName>
-	    ... 
-	</build> -->
 
  	<properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -60,6 +55,9 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+	</build>
+	<build>
+	    <finalName>${artifactId}</finalName>
 	</build>
 
 </project>
