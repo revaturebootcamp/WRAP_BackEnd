@@ -80,10 +80,8 @@ public class UserAccountService {
 		cookie.setHttpOnly(true);
 //		cookie.setSecure(true);
 		
-		//remove user password
-		u.setPassword(null);
 		
-		this.cookieCache.put(cookie.getValue(), u);
+		this.cookieCache.put(cookie.getValue(), user);
 		this.userCache.put(user, cookie.getValue());
 		
 		return cookie;
