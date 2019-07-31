@@ -34,12 +34,13 @@ public class UserAccountService {
 		this.userAccountRepository = userAccountRepository;
 	}
 
-	public Integer getAccountId (String cookie) {
-		UserAccount user = this.cookieCache.get(cookie);
-		if (null == user) {
+	public Integer getAccountId (UserAccount inputUser) {
+		UserAccount user = inputUser;
+		UserAccount user2 = this.userAccountRepository.findByUsernameIgnoreCase(user.getUsername());
+		if (null == user2) {
 			return null;
 		}
-		return user.getId();
+		return user2.getId();
 	}
 	
 	public Boolean verifyLogin (String cookie) {

@@ -9,5 +9,6 @@ public interface UserAccountRepository extends JpaRepository<UserAccount,Integer
 
 	UserAccount findByUsernameIgnoreCaseAndPassword(String username, String password);
 
+	UserAccount findByUsernameIgnoreCase(String username);
 	
 }

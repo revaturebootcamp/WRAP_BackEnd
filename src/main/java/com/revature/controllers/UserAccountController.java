@@ -7,10 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.models.Recipe;
@@ -54,38 +56,42 @@ public class UserAccountController {
 	 * These are for use
 	 */
 	
+	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 	@PostMapping (value="/insert")
 	public Boolean insertAccount (@RequestBody UserAccount userAccount) {
 		return this.userAccountService.insertUserAccount(userAccount);
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 	@PostMapping (value="/login") 
 	public Boolean login (HttpServletResponse response, @RequestBody UserAccount userAccount) {
 		Cookie cookie = this.userAccountService.login(userAccount);
 		
 		if (null == cookie) {
+			System.out.println("null on login");
 			return false;
 		}
-		
 		response.addCookie(cookie);
 		return true;
 	}
 	
 	
 	
-	
+	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 	@PostMapping (value="/recipe/insert")
 	public Recipe insertRecipe (@CookieValue (UserAccountService.COOKIE) String cookie, 
 								@RequestBody Recipe recipe) {
 		UserAccount user = this.userAccountService.getAccount(cookie);
+		int id = this.userAccountService.getAccountId(user);
 		if (null == user) {
 			return null;
 		}
-		recipe.setOwnerId(user.getId());
-		
+		recipe.setOwnerId(id);
+		System.out.println(id);
 		return this.recipeService.insertRecipe (recipe);
 	}
 	
+
 	@PostMapping (value="recipe/insertmany")
 	public List<Recipe> insertRecipes (@CookieValue (UserAccountService.COOKIE) String cookie,
 										@RequestBody Recipe[] recipes) {
@@ -101,12 +107,16 @@ public class UserAccountController {
 		return this.recipeService.insertRecipes(recipes);		
 	}
 	
+	
+	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 	@GetMapping (value="/recipe/find/all")
 	public List<Recipe> getAllRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
 		UserAccount user = this.userAccountService.getAccount(cookie);
+
 		if (null == user) {
 			return null;
 		}
+
 		
 		return this.recipeService.getAllRecipes (user.getId());
 	}
