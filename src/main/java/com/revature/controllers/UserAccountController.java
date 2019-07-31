@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.models.Recipe;
@@ -22,6 +21,7 @@ import com.revature.services.UserAccountService;
 
 @RestController
 @RequestMapping ("/useraccount")
+@CrossOrigin (allowCredentials = "true")
 public class UserAccountController {
 
 	private UserAccountService userAccountService;
@@ -56,13 +56,13 @@ public class UserAccountController {
 	 * These are for use
 	 */
 	
-	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+//	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 	@PostMapping (value="/insert")
 	public Boolean insertAccount (@RequestBody UserAccount userAccount) {
 		return this.userAccountService.insertUserAccount(userAccount);
 	}
 
-	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+//	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 	@PostMapping (value="/login") 
 	public Boolean login (HttpServletResponse response, @RequestBody UserAccount userAccount) {
 		Cookie cookie = this.userAccountService.login(userAccount);
@@ -77,7 +77,7 @@ public class UserAccountController {
 	
 	
 	
-	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+//	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 	@PostMapping (value="/recipe/insert")
 	public Recipe insertRecipe (@CookieValue (UserAccountService.COOKIE) String cookie, 
 								@RequestBody Recipe recipe) {
@@ -108,7 +108,7 @@ public class UserAccountController {
 	}
 	
 	
-	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+//	@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 	@GetMapping (value="/recipe/find/all")
 	public List<Recipe> getAllRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
 		UserAccount user = this.userAccountService.getAccount(cookie);
