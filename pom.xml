@@ -48,13 +48,14 @@
 		</dependency>
 	</dependencies>
 
+<!-- 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 	
-				<!-- Should cause it to be repackaged as a war -->
+			
 
 				<executions>
 					<execution>
@@ -70,5 +71,5 @@
 		</plugins>
 		<finalName>${project.artifactId}</finalName>
 	</build>
-
+ -->
 </project>
