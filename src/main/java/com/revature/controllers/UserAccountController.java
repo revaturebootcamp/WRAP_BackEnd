@@ -79,12 +79,12 @@ public class UserAccountController {
 	public Recipe insertRecipe (@CookieValue (UserAccountService.COOKIE) String cookie, 
 								@RequestBody Recipe recipe) {
 		UserAccount user = this.userAccountService.getAccount(cookie);
-		int id = this.userAccountService.getAccountId(user);
+		
 		if (null == user) {
 			return null;
 		}
-		recipe.setOwnerId(id);
-		System.out.println(id);
+		
+		recipe.setOwnerId(user.getId());
 		return this.recipeService.insertRecipe (recipe);
 	}
 	
@@ -108,7 +108,7 @@ public class UserAccountController {
 	@GetMapping (value="/recipe/find/all")
 	public List<Recipe> getAllRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
 		UserAccount user = this.userAccountService.getAccount(cookie);
-
+		
 		if (null == user) {
 			return null;
 		}
@@ -120,6 +120,7 @@ public class UserAccountController {
 	@GetMapping (value="/recipe/find/current")
 	public List<Recipe> getCurrentRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
 		UserAccount user = this.userAccountService.getAccount(cookie);
+		
 		if (null == user) {
 			return null;
 		}
@@ -130,6 +131,7 @@ public class UserAccountController {
 	@GetMapping (value="/recipe/find/favorite")
 	public List<Recipe> getFavoriteRecipes (@CookieValue (UserAccountService.COOKIE) String cookie) {
 		UserAccount user = this.userAccountService.getAccount(cookie);
+		
 		if (null == user) {
 			return null;
 		}
