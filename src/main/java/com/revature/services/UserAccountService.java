@@ -51,6 +51,25 @@ public class UserAccountService {
 		return this.cookieCache.get(cookie);
 	}
 	
+	public Boolean logout (String cookie) {
+		if (null == cookie) {
+			return false;
+		}
+		
+		UserAccount user = this.cookieCache.get(cookie);
+		
+		if (null == user) {
+			return false;
+		}
+		
+		this.cookieCache.remove (cookie);
+		this.userCache.remove(user);
+		
+		return true;
+	}
+	
+
+	
 	public Cookie login (UserAccount u) {
 		UserAccount user = this.userAccountRepository.findByUsernameIgnoreCaseAndPassword (u.getUsername(), u.getPassword());
 
@@ -62,10 +81,12 @@ public class UserAccountService {
 		//ensure if there is an old cookie value, it is removed
 		user.setPassword(null); //set null since not storing password locally
 		String badCookie = this.userCache.get(user);
-		if (null != badCookie) {
-			cookieCache.remove(badCookie);
-			userCache.remove(user);
-		}
+		//remove cached data 
+		this.logout(badCookie);
+//		if (null != badCookie) {
+//			cookieCache.remove(badCookie);
+//			userCache.remove(user);
+//		}
 		
 		//set the new cookie for the login
 		Cookie cookie = null;

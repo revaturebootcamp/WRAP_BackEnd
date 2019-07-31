@@ -45,16 +45,32 @@ public class UserAccountController {
 		return this.userAccountService.selectAllUserAccounts();
 	}
 
-	@GetMapping (value="/verifyAccount")
-	public Boolean verifyAccount (@CookieValue (UserAccountService.COOKIE) String cookie) {
-		return this.userAccountService.verifyLogin(cookie);
-	}
+	
+	
 	
 	
 	
 	/*
 	 * These are for use
 	 */
+	
+	@GetMapping (value="/logout")
+	public Boolean logout (@CookieValue (UserAccountService.COOKIE) String cookie,
+			HttpServletResponse response) {
+		//set cookie to be removed by browser
+		Cookie del = new Cookie (UserAccountService.COOKIE , "");
+		del.setMaxAge(0);
+		response.addCookie(del);
+		
+		//remove account information on the backend
+		return this.userAccountService.logout (cookie);
+	}
+	
+
+	@GetMapping (value="/verifyAccount")
+	public Boolean verifyAccount (@CookieValue (UserAccountService.COOKIE) String cookie) {
+		return this.userAccountService.verifyLogin(cookie);
+	}
 	
 	@PostMapping (value="/insert")
 	public Boolean insertAccount (@RequestBody UserAccount userAccount) {
