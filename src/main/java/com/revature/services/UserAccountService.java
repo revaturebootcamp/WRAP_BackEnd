@@ -27,7 +27,7 @@ public class UserAccountService {
 	public static final String COOKIE = "WRAP_UserAccountCookie";
 	private static final int LOGOUT_TIME = 120 * 60;
 	
-	private Logger logger = Logger.getLogger(UserAccountService.class);
+	private static Logger logger = Logger.getLogger(UserAccountService.class);
 	
 	public UserAccountService() {
 	}
@@ -76,6 +76,7 @@ public class UserAccountService {
 		
 		logger.info("Attempted login for username: " + u.getUsername());
 		
+		u.setPassword(String.valueOf(u.getPassword().hashCode()));
 		UserAccount user = this.userAccountRepository.findByUsernameIgnoreCaseAndPassword (
 							u.getUsername(), u.getPassword());
 
@@ -120,6 +121,7 @@ public class UserAccountService {
 		}
 		
 		try {
+			u.setPassword(String.valueOf(u.getPassword().hashCode()));
 			this.userAccountRepository.save(u);
 		}
 		catch (Exception e) {
