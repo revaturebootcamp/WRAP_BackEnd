@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Random;
 
 import javax.servlet.http.Cookie;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class UserAccountService {
 	public static final String COOKIE = "WRAP_UserAccountCookie";
 	private static final int LOGOUT_TIME = 120 * 60;
 	
+	private Logger logger = Logger.getLogger(UserAccountService.class);
+	
 	public UserAccountService() {
 	}
 
@@ -34,14 +38,6 @@ public class UserAccountService {
 		this.userAccountRepository = userAccountRepository;
 	}
 
-	public Integer getAccountId (UserAccount inputUser) {
-		UserAccount user = inputUser;
-		UserAccount user2 = this.userAccountRepository.findByUsernameIgnoreCase(user.getUsername());
-		if (null == user2) {
-			return null;
-		}
-		return user2.getId();
-	}
 	
 	public Boolean verifyLogin (String cookie) {
 		return this.cookieCache.containsKey(cookie);
@@ -57,6 +53,7 @@ public class UserAccountService {
 		}
 		
 		UserAccount user = this.cookieCache.get(cookie);
+		logger.info("Logout invoked by user: " + user);
 		
 		if (null == user) {
 			return false;
@@ -71,22 +68,30 @@ public class UserAccountService {
 
 	
 	public Cookie login (UserAccount u) {
-		UserAccount user = this.userAccountRepository.findByUsernameIgnoreCaseAndPassword (u.getUsername(), u.getPassword());
-
-		if (null == user) {
+		
+		if (null == u) {
+			logger.warn("Failed login with null credentials");
 			return null;
 		}
 		
+		logger.info("Attempted login for username: " + u.getUsername());
+		
+		UserAccount user = this.userAccountRepository.findByUsernameIgnoreCaseAndPassword (
+							u.getUsername(), u.getPassword());
+
+		if (null == user) {
+			logger.warn("Failed login for username: " + u.getUsername());
+			
+			return null;
+		}
+		
+		logger.info("Successful login for username: " + u.getUsername());
 		
 		//ensure if there is an old cookie value, it is removed
 		user.setPassword(null); //set null since not storing password locally
 		String badCookie = this.userCache.get(user);
 		//remove cached data 
 		this.logout(badCookie);
-//		if (null != badCookie) {
-//			cookieCache.remove(badCookie);
-//			userCache.remove(user);
-//		}
 		
 		//set the new cookie for the login
 		Cookie cookie = null;
@@ -101,7 +106,6 @@ public class UserAccountService {
 		cookie.setHttpOnly(true);
 //		cookie.setSecure(true);
 		
-		
 		this.cookieCache.put(cookie.getValue(), user);
 		this.userCache.put(user, cookie.getValue());
 		
@@ -110,17 +114,27 @@ public class UserAccountService {
 	}
 	
 	public Boolean insertUserAccount (UserAccount u) {
+		if (null == u) {
+			logger.warn("Failed to insert null user account");
+			return false;
+		}
+		
 		try {
 			this.userAccountRepository.save(u);
 		}
 		catch (Exception e) {
+			logger.warn("Failed to insert user account for username: " + u.getUsername());
+			e.printStackTrace();
 			return false;
 		}
+		
+		logger.info("Successfully inserted new user account for username: " + u.getUsername());
 		return true;
 	}
 	
 	public List<UserAccount> selectAllUserAccounts () {
-		return this.userAccountRepository.findAll();
+//		return this.userAccountRepository.findAll();
+		return new ArrayList<UserAccount> ();
 	}
 	
 	
