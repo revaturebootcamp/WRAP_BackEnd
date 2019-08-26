@@ -21,7 +21,7 @@ import com.revature.services.UserAccountService;
 
 @RestController
 @RequestMapping ("/useraccount")
-@CrossOrigin (allowCredentials = "true")
+@CrossOrigin (origins = "*", allowCredentials = "true")
 public class UserAccountController {
 
 	private UserAccountService userAccountService;
